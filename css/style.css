@@ -1,0 +1,11 @@
+html {
+    font-family: monospace;
+    margin: auto;
+    text-align: center;
+    padding: 15em 2em;
+}
+
+ul {
+    display: inline-block;
+    text-align: left;
+}
