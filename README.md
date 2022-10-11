@@ -10,3 +10,14 @@ To make it a little bit more diverse, I decided to also add some other bad UIs, 
 This project is just a simple collection of terrible user interfaces. 
 
 This project will be written in basic HTML/CSS/Javascript
+
+## Hacktoberfest participants!
+
+This repo is open for Hacktoberfest participants! 
+
+Check out the Issues tab for issues marked `Hacktoberfest` If you find something that you'd like to work on, please comment on the issue to get it assigned. 
+Then just fork the repo, make your changes and create a pull request. 
+
+Do you have a terrible UI idea that has not been opened as an issue? Feel free to open an issue with the tag `enhancement` and create a pull request with your terrible UI. 
+
+Happy coding!
