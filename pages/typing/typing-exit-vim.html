@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Terrible UI - typing</title>
+    <link rel="stylesheet" href="../../css/style.css" />
+    <style>
+      body {
+        font-size: 1rem;
+      }
+      html:has(#input[data-mode]) {
+        margin: 0;
+        text-align: left;
+        padding: 0;
+      }
+      body:has(#input[data-mode]) {
+        background: #000;
+        font-family: monospace;
+      }
+
+      body:has(#input[data-mode]) label,
+      body:has(#input[data-mode]) a {
+        display: none;
+      }
+
+      body:has(#input[data-mode]) #cmd {
+        display: block;
+      }
+
+      #input {
+        appearance: none;
+        border: none;
+        background: none;
+        font: inherit;
+        border: 1px solid gray;
+        outline: 0;
+        box-shadow: none;
+      }
+
+      #input:where([data-mode]) {
+        border: none;
+        width: 100%;
+        color: white;
+      }
+
+      #cmd {
+        appearance: none;
+        border: none;
+        background: none;
+        font: inherit;
+        color: white;
+        display: none;
+      }
+
+      #mode {
+        color: white;
+      }
+
+      .bar {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        display: flex;
+      }
+
+      #error {
+        color: white;
+        background: darkred;
+      }
+    </style>
+  </head>
+  <body>
+    <div>
+      <a href="./typing.html">try a different one!</a>
+
+      <div style="margin-top: 1rem">
+        <label>An unsuspecting input</label>
+        <input type="text" id="input" />
+        <div class="bar">
+          <span id="mode"></span>
+          <span id="error"></span>
+          <input type="text" id="cmd" />
+        </div>
+      </div>
+    </div>
+    <script>
+      const inputEl = document.querySelector("#input");
+      const cmdEl = document.querySelector("#cmd");
+      const modeEl = document.querySelector("#mode");
+      const errorEl = document.querySelector("#error");
+
+      let mode = "idle";
+      let oldValue = "";
+
+      const setMode = (value) => {
+        mode = value;
+        modeEl.textContent = mode === "insert" ? "--INSERT--" : "";
+
+        if (mode === "idle") {
+          inputEl.removeAttribute("data-mode");
+        } else {
+          inputEl.setAttribute("data-mode", mode);
+        }
+      };
+
+      inputEl.addEventListener("focus", () => {
+        if (mode === "idle") {
+          oldValue = inputEl.value;
+          setMode("insert");
+        }
+      });
+
+      inputEl.addEventListener("change", (e) => {
+        if (mode === "normal") {
+          e.preventDefault();
+        }
+      });
+
+      inputEl.addEventListener("keydown", (e) => {
+        if (mode === "insert") {
+          if (e.key === "Escape") {
+            setMode("normal");
+          }
+        }
+
+        if (mode === "normal") {
+          e.preventDefault();
+
+          if (e.key === "i") {
+            setMode("insert");
+          }
+
+          if ([":", "q", "w", "!"].includes(e.key)) {
+            errorEl.textContent = "";
+            cmdEl.value += e.key;
+          }
+
+          if (e.key === "Enter") {
+            if (cmdEl.value === ":q" && inputEl.value !== oldValue) {
+              errorEl.textContent =
+                "E37: No write since last change (add ! to override)";
+              cmdEl.value = "";
+              return;
+            }
+
+            if (cmdEl.value === ":wq") {
+              cmdEl.value = "";
+              setMode("idle");
+            }
+
+            if ([":q!", ":q"].includes(cmdEl.value)) {
+              cmdEl.value = "";
+              inputEl.value = "";
+              setMode("idle");
+            }
+
+            inputEl.blur();
+          }
+
+          if (e.key === "Backspace") {
+            cmdEl.value = cmdEl.value.slice(0, -1);
+          }
+        }
+      });
+
+      inputEl.addEventListener("blur", () => {
+        if (mode === "insert" || mode === "normal") {
+          inputEl.focus();
+        }
+      });
+    </script>
+  </body>
+</html>
