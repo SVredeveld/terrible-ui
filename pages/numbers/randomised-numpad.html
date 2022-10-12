@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Terrible UI - typing</title>
+    <link rel="stylesheet" href="../../css/style.css" />
+    <style>
+      body {
+        font-size: 1rem;
+      }
+
+      html:has(#input[data-mode]) {
+        margin: 0;
+        text-align: left;
+        padding: 0;
+      }
+
+      .container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        height: 300px;
+        width: 350px;
+        border-radius: 15px;
+      }
+
+      .numPadButton,
+      .resetButton {
+        width: 47px;
+        height: 24px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div
+      style="
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+      "
+    >
+      <a href="./phonenumbers.html">try a different one!</a>
+
+      <div style="margin-top: 1rem">
+        <div class="container">
+          <input type="text" id="inputTag" value="" />
+          <div class="inputBtn">
+            <table>
+              <tr>
+                <td><button class="numPadButton">9</button></td>
+                <td><button class="numPadButton">8</button></td>
+                <td><button class="numPadButton">7</button></td>
+              </tr>
+              <tr>
+                <td><button class="numPadButton">6</button></td>
+                <td><button class="numPadButton">5</button></td>
+                <td><button class="numPadButton">4</button></td>
+              </tr>
+              <tr>
+                <td><button class="numPadButton">3</button></td>
+                <td><button class="numPadButton">2</button></td>
+                <td><button class="numPadButton">1</button></td>
+              </tr>
+              <tr>
+                <td><button class="numPadButton">0</button></td>
+                <td>
+                  <button class="resetButton" onclick="{resetInput()}">
+                    Reset
+                  </button>
+                </td>
+              </tr>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+      const inputEl = document.querySelector("#input");
+      let btnText = "";
+      let screenText = document.querySelector("input").value;
+
+      const button = Array.from(document.querySelectorAll(".numPadButton"));
+      button.map((x) => {
+        x.addEventListener("click", (e) => {
+          btnText = e.target.innerText;
+          screenText = screenText + btnText;
+          document.querySelector("input").value = screenText;
+          randomiseNumbers();
+        });
+      });
+
+      const resetInput = () => {
+        document.querySelector("input").value = "";
+        screenText = "";
+      };
+
+      const randomiseNumbers = () => {
+        const button = Array.from(document.querySelectorAll(".numPadButton"));
+        const numArray = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+        const shuffledArray = shuffle(numArray);
+        let i = 0;
+        button.map((x) => {
+          x.innerText = shuffledArray[i];
+          i++;
+        });
+      };
+
+      const shuffle = (array) => {
+        let currentIndex = array.length,
+          randomIndex;
+
+        // While there remain elements to shuffle.
+        while (currentIndex != 0) {
+          // Pick a remaining element.
+          randomIndex = Math.floor(Math.random() * currentIndex);
+          currentIndex--;
+
+          // And swap it with the current element.
+          [array[currentIndex], array[randomIndex]] = [
+            array[randomIndex],
+            array[currentIndex],
+          ];
+        }
+
+        return array;
+      };
+    </script>
+  </body>
+</html>
