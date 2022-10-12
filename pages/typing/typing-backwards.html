@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Terrible UI - typing</title>
+    <link rel="stylesheet" href="../../css/style.css" />
+    <style>
+        body {
+            font-size: 1rem;
+        }
+
+        html:has(#input[data-mode]) {
+            margin: 0;
+            text-align: left;
+            padding: 0;
+        }
+
+        body:has(#input[data-mode]) {
+            background: #000;
+            font-family: monospace;
+        }
+
+        body:has(#input[data-mode]) label,
+        body:has(#input[data-mode]) a {
+            display: none;
+        }
+
+        body:has(#input[data-mode]) #cmd {
+            display: block;
+        }
+
+        #input {
+            appearance: none;
+            border: none;
+            background: none;
+            font: inherit;
+            border: 1px solid gray;
+            outline: 0;
+            box-shadow: none;
+        }
+
+        #input:where([data-mode]) {
+            border: none;
+            width: 100%;
+            color: white;
+        }
+
+        #cmd {
+            appearance: none;
+            border: none;
+            background: none;
+            font: inherit;
+            color: white;
+            display: none;
+        }
+
+        #mode {
+            color: white;
+        }
+
+        .bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            display: flex;
+        }
+
+        #error {
+            color: white;
+            background: darkred;
+        }
+    </style>
+</head>
+
+<body>
+    <div>
+        <a href="./typing.html">try a different one!</a>
+
+        <div style="margin-top: 1rem">
+            <label>Enter input</label>
+            <input type="text" id="input" />
+            <div class="bar">
+                <input type="text" id="word" />
+            </div>
+            <button id="find" onclick="findBackward()">Click Me!</button>
+        </div>
+    </div>
+    <script>
+        const inputEl = document.querySelector("#input");
+
+        inputEl.addEventListener("focusout", () => {
+            findBackward();
+        });
+
+        function findBackward() {
+            inputEl.value = reverseString(inputEl.value);
+        }
+
+        function reverseString(str) {
+            return str.split("").reverse().join("");
+        }
+
+    </script>
+</body>
+
+</html>
